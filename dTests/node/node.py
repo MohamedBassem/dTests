@@ -3,8 +3,6 @@ import utils.utils
 from utils.utils import compile_file, exec_file
 import socket
 import os
-from subprocess import call
-import subprocess
 import json
 import random
 
@@ -27,6 +25,7 @@ class Node:
             self.execute_job(job)
             output = self.finalize_output()
             s.send(output)
+            print "Job executed successfully with output %s" % output
 
     def execute_job(self, job):
         working_directory = "/tmp/dTests/" + str(job["job_id"]) + "_" + str(random.randrange(0,1000))
@@ -41,6 +40,7 @@ class Node:
         f.write(code)
         f.close()
         
+        file_name = os.path.abspath(file_name)
         compile_file(file_name, job["lang"])
 
         self.outputs = []

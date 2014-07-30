@@ -35,14 +35,14 @@ def read_configuration(configuration_file):
         exit()
     with open(configuration_file, 'r') as config_file:
         config = config_file.read()
-    config = json.loads(content)
+    config = json.loads(config)
 
 def run_project(args):
     read_configuration(args.config)
     lang = config["lang"]
     input_file = os.path.abspath(args.input or "input.in")
-    program_file = os.path.abspath(args.program or "program"+lang)
-    splitter_file = os.path.abspath(args.splitter or "splitter"+lang)
+    program_file = os.path.abspath(args.program or "program."+lang)
+    splitter_file = os.path.abspath(args.splitter or "splitter."+lang)
     
     if not os.path.isfile(input_file):
         print "Error : %s file is missing" % input_file
@@ -62,7 +62,13 @@ def run_project(args):
         print "Error : %s file contains compiltation errors" % splitter_file
         exit()
 
-    testcases = exec_file(splitter_file, lang).split(config["split_string"])
+    _testcases = exec_file(splitter_file, lang).split(config["split_string"])
+    if not _testcases[-1]: _testcases = _testcases[0:-1]
+    test_counter = 0
+    testcases = []
+    for i in _testcases:
+        testcases.append( [test_counter, i] )
+        test_counter += 1
     job = {}
     job["source_file"] = program_file
     job["testcases"] = testcases
@@ -92,15 +98,14 @@ def new_project(args):
     f.close()
 
     # Write other files
-    open("splitter"+lang, 'a').close()
+    open("splitter."+lang, 'a').close()
     open("input.in", 'a').close()
-    open("program"+lang, 'a').close()
+    open("program."+lang, 'a').close()
 
 if __name__ == '__main__':
 
     parser = create_parser() 
     args = parser.parse_args()
-    print args
     if args.type == "run":
         run_project(args)
     elif args.type == "new":

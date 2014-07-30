@@ -5,6 +5,7 @@ class MySocket:
     def __init__(self, sock=None):
         if sock is None:
             self.sock = socket.socket()
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         else:
             self.sock = sock
 
