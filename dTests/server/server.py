@@ -27,7 +27,6 @@ class Server:
             print 'Node ', address , ' connected to the server'
             new_node = NodeCommunicator(server, address, client)
             self.nodes.append(new_node)
-            new_node.start()
     
     def listen_job(self):
         s = utils.my_socket.MySocket()
@@ -58,7 +57,7 @@ class Server:
             self.semaphore = threading.Semaphore(0)
             self.semaphore.acquire()
             self.finalize_output()
-            client.sendall(self.output)
+            client.send(self.output)
             client.close()
 
     def start(self):
