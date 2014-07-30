@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import threading
-import socket
-import server.node_communicator
+import utils.my_socket
+import node_communicator
 import json
 
 class Server:
@@ -12,10 +12,10 @@ class Server:
         self.nodes_port = nodes_port
         self.jobs_port = jobs_port
         self.nodes = []
-        self.job_count
+        self.job_count = 0
 
     def listen_node(self):
-        s = socket.socket()
+        s = utils.MySocket()
         host = socket.gethostname()
         port = self.nodes_port
         s.bind((host, port))
@@ -28,7 +28,7 @@ class Server:
             new_node.start()
     
     def listen_job(self):
-        s = socket.socket()
+        s = utils.MySocket()
         host = sockent.gethostname()
         port = self.jobs_port
         s.bind((host,port))
@@ -55,14 +55,14 @@ class Server:
             self.running_nodes = len(self.nodes)
             self.semaphore = threading.Semaphore(0)
             self.semaphore.acquire()
-            client.send(self.output)
+            client.sendall(self.output)
             client.close()
 
     def start(self):
-        node_listener = threading.Thread(target=listen_node)
+        node_listener = threading.Thread(target=self.listen_node)
         node_listener.daemon = True
         node_listener.start()
-        job_listener = threading.Thread(target=listen_job)
+        job_listener = threading.Thread(target=self.listen_job)
         job_listener.daemon = True
         job_listener.start()
     
