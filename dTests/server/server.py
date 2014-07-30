@@ -72,6 +72,7 @@ class Server:
             self.finalize_output()
             client.send(self.output)
             client.close()
+            print "Job %s is done and responded to with %s" % (job_id, self.output)
 
     def start(self):
         node_listener = threading.Thread(target=self.listen_node)

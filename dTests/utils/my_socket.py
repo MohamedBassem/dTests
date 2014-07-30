@@ -26,6 +26,8 @@ class MySocket:
         recv_size=8192
         while total_len<size:
             sock_data = self.sock.recv(recv_size)
+            if not sock_data:
+                return ''
             if not body_started:
                 if len(sock_data)>8:
                     size_data+=sock_data

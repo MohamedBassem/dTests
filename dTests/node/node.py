@@ -4,6 +4,7 @@ import os
 from subprocess import call
 import subprocess
 import json
+import random
 
 class Node:
 
@@ -16,6 +17,9 @@ class Node:
         print "Connected to server on port %s" % self.port
         while True:
             job = s.recv()
+            if not job:
+                print "Server Disconnected"
+                break
             print "New job recieved : %s " % job
             job = json.loads(job)
             self.execute_job(job)
@@ -23,7 +27,9 @@ class Node:
             s.send(output)
 
     def execute_job(self, job):
-        working_directory = "/tmp/dTests/" + str(job["job_id"])
+        working_directory = "/tmp/dTests/" + str(job["job_id"]) + "_" + str(random.randrange(0,1000))
+        if not os.path.isdir("/tmp/dTests"):
+            os.mkdir("/tmp/dTests")
         os.mkdir(working_directory)
         os.chdir(working_directory)
         
