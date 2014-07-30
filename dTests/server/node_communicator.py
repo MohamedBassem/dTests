@@ -1,7 +1,7 @@
 import threading
 import json
 
-class NodeCommunicator(threading.Thread):
+class NodeCommunicator:
     
     def __init__(self, server, address, socket):
         self.server = server
@@ -17,4 +17,7 @@ class NodeCommunicator(threading.Thread):
 
     def run_job(self, job):
         self.job = job
-        self.start()
+        threading.Thread(target=self.run).start()
+
+    def get_address(self):
+        return self.address

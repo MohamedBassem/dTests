@@ -3,6 +3,7 @@ import socket
 import os
 from subprocess import call
 import subprocess
+import json
 
 class Node:
 
@@ -11,7 +12,7 @@ class Node:
 
     def start(self):
         s = utils.my_socket.MySocket()
-        s.connect((socket.gethostname(), self.port))
+        s.connect(socket.gethostname(), self.port)
         print "Connected to server on port %s" % self.port
         while True:
             job = s.recv()
@@ -22,12 +23,12 @@ class Node:
             s.send(output)
 
     def execute_job(self, job):
-        working_directory = "/tmp/dTests_#" + str(job["job_id"])
+        working_directory = "/tmp/dTests/" + str(job["job_id"])
         os.mkdir(working_directory)
         os.chdir(working_directory)
         
         code = job["source_file"]
-        file_name = job["source_file_name"]
+        file_name = job["source_file_name"].split("/")[-1]
         compile_name = file_name.split(".")[:-1][0]
         f = open(file_name,'w')
         f.write(code)

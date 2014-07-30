@@ -12,7 +12,7 @@ class MySocket:
         config = (host, port)
         self.sock.bind(config)
 
-    def send(self, msg):
+    def send(self, data):
         self.sock.sendall(struct.pack('>Q', len(data))+data)
     
     # From : http://code.activestate.com/recipes/408859-socketrecv-three-ways-to-turn-it-into-recvall/
@@ -45,6 +45,12 @@ class MySocket:
         client, address = self.sock.accept()
         return (MySocket(client), address)
 
+    def connect(self, host, port):
+        config = (host, port)
+        self.sock.connect(config)
+    
     def listen(self, num):
         self.sock.listen(num)
+    def close(self):
+        self.sock.close()
 

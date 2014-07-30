@@ -17,29 +17,33 @@ class Server:
         self.job_count = 0
 
     def listen_node(self):
-        s = utils.my_socket.MySocket()
+        self.node_socket = utils.my_socket.MySocket()
         host = socket.gethostname()
         port = self.nodes_port
-        s.bind(host, port)
+        self.node_socket.bind(host, port)
+        self.node_socket.listen(5)
         print "Node listener started and listening on port %s" % port
-        s.listen(5)
         while True:
-            client, address = s.accept()
+            client, address = self.node_socket.accept()
             print 'Node ', address , ' connected to the server'
-            new_node = NodeCommunicator(server, address, client)
+            new_node = node_communicator.NodeCommunicator(self, address, client)
             self.nodes.append(new_node)
     
     def listen_job(self):
-        s = utils.my_socket.MySocket()
+        self.job_socket = utils.my_socket.MySocket()
         host = socket.gethostname()
         port = self.jobs_port
+        self.job_socket.bind(host,port)
+        self.job_socket.listen(5)
         print "Job listener started and listening on port %s" % port
-        s.bind(host,port)
-        s.listen(5)
         while True:
-            client, address = s.accept()
+            client, address = self.job_socket.accept()
             print 'New job is being initiated'
-            print 'The new job will run with %s nodes' % len(self.nodes)
+            if not len(self.nodes):
+                print 'Job aborted, Not enough nodes'
+                client.send("There must be at least one running node.")
+                continue
+            print 'The new job will run on %s nodes' % len(self.nodes)
             job_description = json.loads(client.recv())
             job_id = random.randrange(1000000000000,10000000000000000)
             print 'Job %s recieved : %s' % (job_id, json.dumps(job_description))
@@ -50,14 +54,19 @@ class Server:
             node_job_description["source_file"] = Server.read_code(job_description["source_file"])
             testcases_per_node = (len(job_description["testcases"]) + len(self.nodes) - 1 )/len(self.nodes)
             index = 0
+            self.partial_outputs = []
+            self.running_nodes = 0
             for node in self.nodes:
                 tests = []
                 for i in range(0,testcases_per_node):
-                    tests.append([index, job_description["testcases"][index]])
-                    index += 1
+                    if index < len(job_description["testcases"]):
+                        tests.append(job_description["testcases"][index])
+                        index += 1
                 node_job_description["testcases"] = tests
-                node.run_job(json.dumps(node_job_description))
-            self.running_nodes = len(self.nodes)
+                if tests:
+                    node.run_job(json.dumps(node_job_description))
+                    self.running_nodes += 1
+
             self.semaphore = threading.Semaphore(0)
             self.semaphore.acquire()
             self.finalize_output()
@@ -66,15 +75,13 @@ class Server:
 
     def start(self):
         node_listener = threading.Thread(target=self.listen_node)
-        node_listener.daemon = False
+        node_listener.daemon = True
         node_listener.start()
-        job_listener = threading.Thread(target=self.listen_job)
-        job_listener.daemon = False
-        job_listener.start()
+        self.listen_job()
 
     def register_done(self, node, output):
         self.partial_outputs += output
-        print "Node %s finished its work" % node.getAddress()
+        print "Node %s finished its work and responded with %s" % (str(node.get_address()), str(output))
         self.running_nodes -= 1
         if not self.running_nodes:
             self.semaphore.release()
@@ -82,13 +89,16 @@ class Server:
     def finalize_output(self):
         self.partial_outputs.sort()
         self.output = [ x[1] for x in self.partial_outputs ]
-        self.output = "".join([ str(i[1]) for i in self.output ])
+        self.output = "".join(self.output)
     
-    def read_code(cls, path):
+    @staticmethod
+    def read_code(path):
         content = ''
         with open(path, 'r') as content_file:
             content = content_file.read()
         return content
 
-
+    def close_sockets(self):
+        self.node_socket.close()
+        self.job_socket.close()
 
