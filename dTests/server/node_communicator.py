@@ -1,4 +1,5 @@
 import threading
+import json
 
 class NodeCommunicator(threading.Thread):
     
@@ -10,7 +11,8 @@ class NodeCommunicator(threading.Thread):
     def run(self):
         self.socket.send(self.job)
         output = self.socket.recv()
-        self.server.register_done(self,output)
+        output = json.loads(output)
+        self.server.register_done(self, output)
 
 
     def run_job(self, job):

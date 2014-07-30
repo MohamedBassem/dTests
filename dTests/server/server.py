@@ -5,6 +5,7 @@ import utils.my_socket
 import socket
 import node_communicator
 import json
+import random
 
 class Server:
 
@@ -39,20 +40,23 @@ class Server:
             client, address = s.accept()
             print 'New job is being initiated'
             print 'The new job will run with %s nodes' % len(self.nodes)
-            job_description = json.loads(socket.recv(2))
-            print 'Job recieved : %s' % str(job_description)
+            job_description = json.loads(client.recv())
+            job_id = random.randrange(1000000000000,10000000000000000)
+            print 'Job %s recieved : %s' % (job_id, json.dumps(job_description))
             self.job_count += 1
             node_job_description = {}
+            node_job_description["job_id"] = job_id
+            node_job_description["source_file_name"] = job_description["source_file"]
             node_job_description["source_file"] = Server.read_code(job_description["source_file"])
             testcases_per_node = (len(job_description["testcases"]) + len(self.nodes) - 1 )/len(self.nodes)
             index = 0
             for node in self.nodes:
                 tests = []
                 for i in range(0,testcases_per_node):
-                    tests.append((index, job_description["testcases"][index]))
+                    tests.append([index, job_description["testcases"][index]])
                     index += 1
                 node_job_description["testcases"] = tests
-                node.run_job(str(node_job_description))
+                node.run_job(json.dumps(node_job_description))
             self.running_nodes = len(self.nodes)
             self.semaphore = threading.Semaphore(0)
             self.semaphore.acquire()
