@@ -15,6 +15,7 @@ class Server:
         self.jobs_port = jobs_port
         self.nodes = []
         self.job_count = 0
+        self.nodes_id = 0
 
     def listen_node(self):
         self.node_socket = utils.my_socket.MySocket()
@@ -26,7 +27,8 @@ class Server:
         while True:
             client, address = self.node_socket.accept()
             print 'Node ', address , ' connected to the server'
-            new_node = node_communicator.NodeCommunicator(self, address, client)
+            new_node = node_communicator.NodeCommunicator(self, self.nodes_id, address, client)
+            self.nodes_id += 1
             self.nodes.append(new_node)
     
     def listen_job(self):
@@ -93,6 +95,10 @@ class Server:
         self.output = [ x[1] for x in self.partial_outputs ]
         self.output = "".join(self.output)
     
+    def unregister_node(self, node):
+        self.nodes = [ i for i in self.nodes if i.node_id != node.node_id ]
+        print "Node %s disconnected" % str(node.get_address())
+
     @staticmethod
     def read_code(path):
         content = ''
