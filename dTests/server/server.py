@@ -50,6 +50,7 @@ class Server:
             self.job_count += 1
             node_job_description = {}
             node_job_description["job_id"] = job_id
+            node_job_description["lang"] = job_description["lang"]
             node_job_description["source_file_name"] = job_description["source_file"]
             node_job_description["source_file"] = Server.read_code(job_description["source_file"])
             testcases_per_node = (len(job_description["testcases"]) + len(self.nodes) - 1 )/len(self.nodes)

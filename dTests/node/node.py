@@ -1,4 +1,6 @@
 import utils.my_socket
+import utils.utils
+from utils.utils import compile_file, exec_file
 import socket
 import os
 from subprocess import call
@@ -35,20 +37,15 @@ class Node:
         
         code = job["source_file"]
         file_name = job["source_file_name"].split("/")[-1]
-        compile_name = file_name.split(".")[:-1][0]
         f = open(file_name,'w')
         f.write(code)
         f.close()
         
-        subprocess.call(["/usr/bin/env", "g++", file_name, "-o", compile_name])
+        compile_file(file_name, job["lang"])
 
         self.outputs = []
         for testcase in job["testcases"]:
-            process = subprocess.Popen(["./%s" % compile_name], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-            process.stdin.write(testcase[1])
-            process.stdin.close()
-            process.wait()
-            testcase_output = process.stdout.read()
+            testcase_output = exec_file(file_name, job["lang"], testcase[1])            
             self.outputs.append( [testcase[0], testcase_output] )
    
     def finalize_output(self):
