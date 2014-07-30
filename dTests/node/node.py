@@ -8,13 +8,14 @@ import random
 
 class Node:
 
-    def __init__(self, port):
+    def __init__(self, host, port):
+        self.host = host
         self.port = port
 
     def start(self):
         s = dTests.utils.my_socket.MySocket()
-        s.connect(socket.gethostname(), self.port)
-        print "Connected to server on port %s" % self.port
+        s.connect(self.host, self.port)
+        print "Connected to server %s:%s" % (self.host,self.port)
         while True:
             job = s.recv()
             if not job:

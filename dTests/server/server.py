@@ -19,7 +19,7 @@ class Server:
 
     def listen_node(self):
         self.node_socket = dTests.utils.my_socket.MySocket()
-        host = socket.gethostname()
+        host = 'localhost'
         port = self.nodes_port
         self.node_socket.bind(host, port)
         self.node_socket.listen(5)
@@ -33,7 +33,7 @@ class Server:
     
     def listen_job(self):
         self.job_socket = dTests.utils.my_socket.MySocket()
-        host = socket.gethostname()
+        host = 'localhost'
         port = self.jobs_port
         self.job_socket.bind(host,port)
         self.job_socket.listen(5)
