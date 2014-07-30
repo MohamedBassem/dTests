@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import threading
-import utils.my_socket
+import dTests.utils.my_socket
 import socket
 import node_communicator
 import json
@@ -18,7 +18,7 @@ class Server:
         self.nodes_id = 0
 
     def listen_node(self):
-        self.node_socket = utils.my_socket.MySocket()
+        self.node_socket = dTests.utils.my_socket.MySocket()
         host = socket.gethostname()
         port = self.nodes_port
         self.node_socket.bind(host, port)
@@ -32,7 +32,7 @@ class Server:
             self.nodes.append(new_node)
     
     def listen_job(self):
-        self.job_socket = utils.my_socket.MySocket()
+        self.job_socket = dTests.utils.my_socket.MySocket()
         host = socket.gethostname()
         port = self.jobs_port
         self.job_socket.bind(host,port)

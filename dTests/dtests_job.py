@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
-import server.server
-import utils.my_socket
+import dTests.utils.my_socket
 import socket
 import json
 import argparse
 import os
-import utils.utils
-from utils.utils import compile_file, exec_file
+import dTests.utils.utils
+from dTests.utils.utils import compile_file, exec_file
 
 config = ''
 
@@ -74,7 +73,7 @@ def run_project(args):
     job["testcases"] = testcases
     job["lang"] = config["lang"]
 
-    s = utils.my_socket.MySocket()
+    s = dTests.utils.my_socket.MySocket()
     s.connect(socket.gethostname(), 9001)
     s.send(json.dumps(job))
     print s.recv(),

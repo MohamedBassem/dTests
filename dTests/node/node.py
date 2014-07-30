@@ -1,6 +1,6 @@
-import utils.my_socket
-import utils.utils
-from utils.utils import compile_file, exec_file
+import dTests.utils.my_socket
+import dTests.utils.utils
+from dTests.utils.utils import compile_file, exec_file
 import socket
 import os
 import json
@@ -12,7 +12,7 @@ class Node:
         self.port = port
 
     def start(self):
-        s = utils.my_socket.MySocket()
+        s = dTests.utils.my_socket.MySocket()
         s.connect(socket.gethostname(), self.port)
         print "Connected to server on port %s" % self.port
         while True:

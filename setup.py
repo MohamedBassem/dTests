@@ -11,5 +11,4 @@ setup(
     license='LICENSE.md',
     description='A python tool to distributively run GCJ/FB hacker cup testcases on several machines.',
     long_description=open('README.md').read(),
-    install_requires=[],
 )
