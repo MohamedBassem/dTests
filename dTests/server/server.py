@@ -57,6 +57,7 @@ class Server:
             self.running_nodes = len(self.nodes)
             self.semaphore = threading.Semaphore(0)
             self.semaphore.acquire()
+            self.finalize_output()
             client.sendall(self.output)
             client.close()
 
@@ -67,6 +68,18 @@ class Server:
         job_listener = threading.Thread(target=self.listen_job)
         job_listener.daemon = False
         job_listener.start()
+
+    def register_done(self, node, output):
+        self.partial_outputs += output
+        print "Node %s finished its work" % node.getAddress()
+        self.running_nodes -= 1
+        if not self.running_nodes:
+            self.semaphore.release()
+            
+    def finalize_output(self):
+        self.partial_outputs.sort()
+        self.output = [ x[1] for x in self.partial_outputs ]
+        self.output = "".join([ str(i[1]) for i in self.output ])
     
     def read_code(cls, path):
         content = ''
