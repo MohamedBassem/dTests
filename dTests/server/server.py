@@ -2,6 +2,7 @@
 
 import threading
 import utils.my_socket
+import socket
 import node_communicator
 import json
 
@@ -15,10 +16,10 @@ class Server:
         self.job_count = 0
 
     def listen_node(self):
-        s = utils.MySocket()
+        s = utils.my_socket.MySocket()
         host = socket.gethostname()
         port = self.nodes_port
-        s.bind((host, port))
+        s.bind(host, port)
         s.listen(5)
         while True:
             client, address = s.accept()
@@ -28,10 +29,10 @@ class Server:
             new_node.start()
     
     def listen_job(self):
-        s = utils.MySocket()
-        host = sockent.gethostname()
+        s = utils.my_socket.MySocket()
+        host = socket.gethostname()
         port = self.jobs_port
-        s.bind((host,port))
+        s.bind(host,port)
         s.listen(5)
         while True:
             client, address = s.accept()
@@ -60,10 +61,10 @@ class Server:
 
     def start(self):
         node_listener = threading.Thread(target=self.listen_node)
-        node_listener.daemon = True
+        node_listener.daemon = False 
         node_listener.start()
         job_listener = threading.Thread(target=self.listen_job)
-        job_listener.daemon = True
+        job_listener.daemon = False 
         job_listener.start()
     
     def read_code(cls, path):
