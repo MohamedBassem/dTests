@@ -9,7 +9,8 @@ class MySocket:
             self.sock = sock
 
     def bind(self,host, port):
-        self.sock.bind(host,port)
+        config = (host, port)
+        self.sock.bind(config)
 
     def send(self, msg):
         self.sock.sendall(struct.pack('>Q', len(data))+data)
@@ -41,8 +42,8 @@ class MySocket:
         return ''.join(total_data)
     
     def accept(self):
-        tmp_socket = self.sock.accept()
-        return MySocket(tmp_socket)
+        client, address = self.sock.accept()
+        return (MySocket(client), address)
 
     def listen(self, num):
         self.sock.listen(num)

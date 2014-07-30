@@ -20,18 +20,20 @@ class Server:
         host = socket.gethostname()
         port = self.nodes_port
         s.bind(host, port)
+        print "Node listener started and listening on port %s" % port
         s.listen(5)
         while True:
             client, address = s.accept()
             print 'Node ', address , ' connected to the server'
             new_node = NodeCommunicator(server, address, client)
-            nodes.append(new_node)
+            self.nodes.append(new_node)
             new_node.start()
     
     def listen_job(self):
         s = utils.my_socket.MySocket()
         host = socket.gethostname()
         port = self.jobs_port
+        print "Job listener started and listening on port %s" % port
         s.bind(host,port)
         s.listen(5)
         while True:
@@ -61,10 +63,10 @@ class Server:
 
     def start(self):
         node_listener = threading.Thread(target=self.listen_node)
-        node_listener.daemon = False 
+        node_listener.daemon = False
         node_listener.start()
         job_listener = threading.Thread(target=self.listen_job)
-        job_listener.daemon = False 
+        job_listener.daemon = False
         job_listener.start()
     
     def read_code(cls, path):
