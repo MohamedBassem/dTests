@@ -52,6 +52,7 @@ Running dTests
 Sample project
 ==================
 This is a sample cpp project that takes input and multiply it by itself https://github.com/MohamedBassem/dTests/tree/master/samples/power2
+
 * The config.json file contains the project configuration. The language and the splitter syntax.
 
 * The splitter.cpp file contains the code that reads the input from the "input.in" file and splits it to single test cases.
