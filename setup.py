@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='dTests',
-    version='0.1.4',
+    version='0.1.5',
     author='Mohamed Bassem',
     author_email='medoox240@gmail.com',
     packages=['dTests', 'dTests.server', 'dTests.node', 'dTests.utils'],

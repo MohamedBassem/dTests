@@ -74,7 +74,7 @@ def run_project(args):
     job["lang"] = config["lang"]
 
     s = dTests.utils.my_socket.MySocket()
-    s.connect(socket.gethostname(), 9001)
+    s.connect('localhost', 9001)
     s.send(json.dumps(job))
     print s.recv(),
 
