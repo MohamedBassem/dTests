@@ -5,7 +5,7 @@ def compile_file(file_name, lang):
     exit_code = 1
     if lang == "cpp":
         compile_name = ".".join(file_name.split(".")[:-1])
-        exit_code = subprocess.call(["/usr/bin/env", "g++", file_name, "-o", compile_name])
+        exit_code = subprocess.call(["/usr/bin/env", "g++", file_name, "-o", compile_name, "-O2"])
     elif lang == "java":
         exit_code = subprocess.call(["/usr/bin/env", "javac", file_name])
     return exit_code == 0
