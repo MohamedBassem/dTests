@@ -7,6 +7,9 @@ bin/dtests_job
 bin/dtests_node
 bin/dtests_server
 dTests/__init__.py
+dTests/dtests_job.py
+dTests/dtests_node.py
+dTests/dtests_server.py
 dTests/node/__init__.py
 dTests/node/node.py
 dTests/server/__init__.py

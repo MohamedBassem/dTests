@@ -19,11 +19,11 @@ class Server:
 
     def listen_node(self):
         self.node_socket = dTests.utils.my_socket.MySocket()
-        host = 'localhost'
+        host = "0.0.0.0"
         port = self.nodes_port
         self.node_socket.bind(host, port)
         self.node_socket.listen(5)
-        print "Node listener started and listening on port %s" % port
+        print "Node listener started and listening on  %s:%s" % (host,port)
         while True:
             client, address = self.node_socket.accept()
             print 'Node ', address , ' connected to the server'
@@ -33,11 +33,11 @@ class Server:
     
     def listen_job(self):
         self.job_socket = dTests.utils.my_socket.MySocket()
-        host = 'localhost'
+        host = "0.0.0.0"
         port = self.jobs_port
         self.job_socket.bind(host,port)
         self.job_socket.listen(5)
-        print "Job listener started and listening on port %s" % port
+        print "Job listener started and listening on %s:%s" % (host,port)
         while True:
             client, address = self.job_socket.accept()
             print 'New job is being initiated'

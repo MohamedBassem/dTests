@@ -13,6 +13,5 @@ def create_parser():
 parser = create_parser()
 args = parser.parse_args()
 print "Starting Node ..."
-print args
 node = node.node.Node(args.host,int(args.port))
 node.start()
