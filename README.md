@@ -14,8 +14,7 @@ A python tool to distributively run GCJ/FB hacker cup testcases on several machi
 ``` pip install dTests ```
 
 ### Running dTests
-- Create new project
-```dtests_job new project_name language```
+- Create new project ```dtests_job new project_name language```
 
 - The only supported languages now are "cpp" and "java".
 
@@ -25,19 +24,16 @@ A python tool to distributively run GCJ/FB hacker cup testcases on several machi
 
 - Code your program file to read from stdin as if it is reading a single test cases.
 
-- Run the server
-```dtests_server```
+- Run the server ```dtests_server```
 
-- Run one or many nodes on other machines ( or for testing on the same machine )
-```dtests_node --host host --port port```
+- Run one or many nodes on other machines ( or for testing on the same machine ) ```dtests_node --host host --port port```
 
-- Finally run the job
-```dtests_job run```
+- Finally run the job ```dtests_job run```
 
 - Check the help of these commands for further customizations.
 
 ### Sample project
-This is a sample cpp project that takes input and multiply it by itself [](https://github.com/MohamedBassem/dTests/tree/master/samples/power2)
+This is a sample cpp project that takes input and multiply it by itself [https://github.com/MohamedBassem/dTests/tree/master/samples/power2](https://github.com/MohamedBassem/dTests/tree/master/samples/power2)
 - The config.json file contains the project configuration. The language and the splitter syntax.
 - The splitter.cpp file contains the code that reads the input from the ```input.in``` file and splits it to single test cases.
 - The program.cpp file that reads a single test cases from stdin and computes the result.
@@ -50,5 +46,4 @@ This is a sample cpp project that takes input and multiply it by itself [](https
 - Making the system fault tolerant.
 - Finding a better way for splitting the input file.
 - Supporting more programming languages.
-
 
