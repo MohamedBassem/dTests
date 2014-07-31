@@ -7,7 +7,7 @@ How does it work
 ====================
 * First the splitter runs on the input file to split it into seprate test cases.
 
-* Test cases with the actuall code is sent to the server.
+* Test cases with the actuall code are sent to the server.
 
 * The server distributes the test cases and the actuall code to its registered nodes.
 
