@@ -47,3 +47,10 @@ This is a sample cpp project that takes input and multiply it by itself [https:/
 - Finding a better way for splitting the input file.
 - Supporting more programming languages.
 
+
+### Contributing
+Your contributions ( Ideas, improvments, etc.. ) are more than welcome.
+
+
+### LICENSE
+Licensed under the [MIT license](https://github.com/MohamedBassem/dTests/blob/master/LICENSE.txt).

@@ -73,3 +73,11 @@ TODO
 * Supporting more programming languages.
 
 For more info visit https://github.com/MohamedBassem/dTests
+
+Contributing
+============
+Your contributions ( Ideas, improvments, etc.. ) are more than welcome.
+
+LICENSE
+=======
+Licensed under the `MIT license <https://github.com/MohamedBassem/dTests/blob/master/LICENSE.txt>`_.
