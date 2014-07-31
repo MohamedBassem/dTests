@@ -9,8 +9,28 @@ A python tool to distributively run GCJ/FB hacker cup testcases on several machi
 - Each node computes the result for its testcases and sends the result back to the server
 - The server collects the results and sort them by their testcase number and sends them back to the calling script.
 
+### Installation
+
+``` pip install dTests ```
+
 ### Running dTests
-SOON
+- Create new project ```dtests_job new project_name language```
+
+- The only supported languages now are "cpp" and "java".
+
+- Open the new folder and code your splitter to read from the input.in file.
+
+- Between each test cases print "--split--\n". The split marker can be configured in "config.json" file. This will split the input file into single test cases which will be distributed on the machines running.
+
+- Code your program file to read from stdin as if it is reading a single test cases.
+
+- Run the server ```dtests_server```
+
+- Run one or many nodes on other machines ( or for testing on the same machine ) ```dtests_node --host host --port port```
+
+- Finally run the job ```dtests_job run```
+
+- Check the help of these commands for further customizations.
 
 ### TODO
 - Finding a way to pass the testcase number to the program
