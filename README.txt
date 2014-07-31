@@ -17,6 +17,7 @@ How does it work
 
 Installation
 ============
+dTests currently works only on Linux/Unix systems.
 ::
 
     pip install dTests

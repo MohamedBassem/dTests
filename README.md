@@ -10,6 +10,7 @@ A python tool to distributively run GCJ/FB hacker cup testcases on several machi
 - The server collects the results and sort them by their testcase number and sends them back to the calling script.
 
 ### Installation
+dTests currently works only on Linux/Unix systems.
 
 ``` pip install dTests ```
 
